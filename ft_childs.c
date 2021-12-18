@@ -6,7 +6,7 @@
 /*   By: msaouab <msaouab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 00:29:02 by msaouab           #+#    #+#             */
-/*   Updated: 2021/12/17 22:11:11 by msaouab          ###   ########.fr       */
+/*   Updated: 2021/12/18 21:26:12 by msaouab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_error(char *file)
 {
 	(void)file;
-	write(1, strerror(errno), 18);
+	write(1, strerror(errno), 25);
 	write(1, ": ", 2);
 	write(1, file, ft_strlen(file));
 	write(1, "\n", 1);
@@ -36,7 +36,7 @@ int	ft_child_1(int fds[2], char *path, char **av, char **env)
 		strerror(pid1);
 	if (pid1 == 0)
 	{
-		fd = open(av[1], O_CREAT | O_APPEND | O_RDWR, 0777);
+		fd = open(av[1], O_APPEND | O_RDWR, 0777);
 		if (fd < 0)
 			ft_error(av[1]);
 		dup2(fd, 0);

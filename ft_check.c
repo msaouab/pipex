@@ -6,7 +6,7 @@
 /*   By: msaouab <msaouab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 00:05:05 by msaouab           #+#    #+#             */
-/*   Updated: 2021/12/17 13:51:24 by msaouab          ###   ########.fr       */
+/*   Updated: 2021/12/18 21:26:49 by msaouab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	ft_write(char *cmd)
 	write(1, "error: command not found: ", 26);
 	write(1, cmd, ft_strlen(cmd));
 	write(1, "\n", 1);
+	exit(0);
 }
 
 void	ft_assign(char **dst, char *src, char *to_free)
