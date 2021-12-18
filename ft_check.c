@@ -6,11 +6,18 @@
 /*   By: msaouab <msaouab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 00:05:05 by msaouab           #+#    #+#             */
-/*   Updated: 2021/12/16 19:54:00 by msaouab          ###   ########.fr       */
+/*   Updated: 2021/12/17 13:51:24 by msaouab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_pipex.h"
+
+void	ft_write(char *cmd)
+{
+	write(1, "error: command not found: ", 26);
+	write(1, cmd, ft_strlen(cmd));
+	write(1, "\n", 1);
+}
 
 void	ft_assign(char **dst, char *src, char *to_free)
 {
@@ -41,10 +48,12 @@ char	*ft_check_path(char **env)
 char	*ft_check_cmd(char *path, char **arg)
 {
 	char	**link;
+	char	*cmd;
 	int		i;
 
 	i = 0;
 	arg = ft_split(*arg, ' ');
+	cmd = arg[0];
 	arg[0] = ft_strjoin("/", arg[0]);
 	link = ft_split(path, ':');
 	while (link[i])
@@ -57,5 +66,7 @@ char	*ft_check_cmd(char *path, char **arg)
 		}
 		i++;
 	}
+	if (link[i] == NULL)
+		ft_write(cmd);
 	return (NULL);
 }

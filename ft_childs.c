@@ -6,11 +6,21 @@
 /*   By: msaouab <msaouab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 00:29:02 by msaouab           #+#    #+#             */
-/*   Updated: 2021/12/16 20:00:22 by msaouab          ###   ########.fr       */
+/*   Updated: 2021/12/17 22:11:11 by msaouab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_pipex.h"
+
+void	ft_error(char *file)
+{
+	(void)file;
+	write(1, strerror(errno), 18);
+	write(1, ": ", 2);
+	write(1, file, ft_strlen(file));
+	write(1, "\n", 1);
+	exit(0);
+}
 
 int	ft_child_1(int fds[2], char *path, char **av, char **env)
 {
@@ -20,8 +30,6 @@ int	ft_child_1(int fds[2], char *path, char **av, char **env)
 	int		fd;
 
 	check_cmd1 = ft_check_cmd(path, &av[2]);
-	if (!check_cmd1)
-		strerror(errno);
 	cmd1 = ft_split(av[2], ' ');
 	pid1 = fork();
 	if (pid1 == -1)
@@ -29,6 +37,8 @@ int	ft_child_1(int fds[2], char *path, char **av, char **env)
 	if (pid1 == 0)
 	{
 		fd = open(av[1], O_CREAT | O_APPEND | O_RDWR, 0777);
+		if (fd < 0)
+			ft_error(av[1]);
 		dup2(fd, 0);
 		close(fds[0]);
 		dup2(fds[1], STDOUT_FILENO);
@@ -54,6 +64,8 @@ int	ft_child_2(int fds[2], char *path, char **av, char **env)
 	if (pid2 == 0)
 	{
 		fd = open(av[4], O_CREAT | O_RDWR | O_TRUNC, 0777);
+		if (fd < 0)
+			ft_error(av[4]);
 		dup2(fd, 1);
 		close(fds[1]);
 		dup2(fds[0], STDIN_FILENO);
