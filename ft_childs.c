@@ -6,7 +6,7 @@
 /*   By: msaouab <msaouab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 00:29:02 by msaouab           #+#    #+#             */
-/*   Updated: 2021/12/18 21:26:12 by msaouab          ###   ########.fr       */
+/*   Updated: 2021/12/20 11:22:11 by msaouab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int	ft_child_1(int fds[2], char *path, char **av, char **env)
 		close(fd);
 		execve(check_cmd1, cmd1, env);
 	}
+	free(check_cmd1);
+	free_arr(cmd1);
 	return (pid1);
 }
 
@@ -73,5 +75,7 @@ int	ft_child_2(int fds[2], char *path, char **av, char **env)
 		close(fd);
 		execve(check_cmd2, cmd2, env);
 	}
+	free(check_cmd2);
+	free_arr (cmd2);
 	return (pid2);
 }

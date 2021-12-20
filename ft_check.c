@@ -6,7 +6,7 @@
 /*   By: msaouab <msaouab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 00:05:05 by msaouab           #+#    #+#             */
-/*   Updated: 2021/12/18 21:26:49 by msaouab          ###   ########.fr       */
+/*   Updated: 2021/12/20 12:32:14 by msaouab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,28 +46,42 @@ char	*ft_check_path(char **env)
 	return (0);
 }
 
+void	*free_arr(char **arr)
+{
+	int	i;
+
+	i = -1;
+	while (arr[++i])
+		free(arr[i]);
+	free(arr);
+	return (NULL);
+}
+
 char	*ft_check_cmd(char *path, char **arg)
 {
 	char	**link;
 	char	*cmd;
 	int		i;
 
-	i = 0;
+	i = -1;
 	arg = ft_split(*arg, ' ');
 	cmd = arg[0];
-	arg[0] = ft_strjoin("/", arg[0]);
+	ft_assign(&arg[0], ft_strjoin("/", arg[0]), arg[0]);
 	link = ft_split(path, ':');
-	while (link[i])
+	while (link[++i])
 	{
-		link[i] = ft_strjoin(link[i], arg[0]);
+		ft_assign(&link[i], ft_strjoin(link[i], arg[0]), link[i]);
 		if (access(link[i], F_OK & X_OK & R_OK) == 0)
 		{
-			ft_assign(link, NULL, *link);
-			return (link[i]);
+			free_arr(arg);
+			cmd = strdup(link[i]);
+			link = free_arr(link);
+			return (cmd);
 		}
-		i++;
 	}
 	if (link[i] == NULL)
 		ft_write(cmd);
+	link = free_arr(link);
+	arg = free_arr(arg);
 	return (NULL);
 }
